@@ -19,21 +19,17 @@ public class AbstractTestContainers extends ParentTestContainer {
         if (isNotPopulated()) {
 
             addContainer(new MySQLContainerCustomized("mysql:8")
-                    .withInitScript("sitedb.sql")
+                    .withInitScript("joint_dump.sql")
                     .withReuse(reuseContainers),
                     container -> Map.of(
-                            "spring.datasource.url", ((MySQLContainerCustomized) container).getJdbcUrl(),
                             "spring.datasource.username", ((MySQLContainerCustomized) container).getUsername(),
                             "spring.datasource.password", ((MySQLContainerCustomized) container).getPassword(),
-                            "spring.datasource.jdbcUrl", ((MySQLContainerCustomized) container).getJdbcUrl()));
-            addContainer(new MySQLContainerCustomized("mysql:8")
-                            .withInitScript("coredb.sql")
-                            .withReuse(reuseContainers),
-                    container -> Map.of(
-                            "spring.second-datasource.url", ((MySQLContainerCustomized) container).getJdbcUrl(),
+                            "spring.datasource.url", ((MySQLContainerCustomized) container).getJdbcUrl() + "/" + "shieldcoredb",
+                            "spring.datasource.jdbcUrl", ((MySQLContainerCustomized) container).getJdbcUrl() + "/" + "shieldcoredb",
                             "spring.second-datasource.username", ((MySQLContainerCustomized) container).getUsername(),
                             "spring.second-datasource.password", ((MySQLContainerCustomized) container).getPassword(),
-                            "spring.second-datasource.jdbcUrl", ((MySQLContainerCustomized) container).getJdbcUrl()));
+                            "spring.second-datasource.url", ((MySQLContainerCustomized) container).getJdbcUrl() + "/" + "shieldsitedb",
+                            "spring.second-datasource.jdbcUrl", ((MySQLContainerCustomized) container).getJdbcUrl() + "/" + "shieldsitedb"));
         }
         setupConnectivityProperties();
         Map<String, String> connectivityProperties = getConnectivityProperties();

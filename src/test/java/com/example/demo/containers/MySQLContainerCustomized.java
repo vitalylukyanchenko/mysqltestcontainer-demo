@@ -17,10 +17,8 @@ public class MySQLContainerCustomized<SELF extends MySQLContainerCustomized<SELF
         optionallyMapResourceParameterAsVolume(MY_CNF_CONFIG_OVERRIDE_PARAM_NAME, "/etc/mysql/conf.d", "mysql-default-conf");
 
         addExposedPort(3306);
-        addEnv("MYSQL_DATABASE", "eis");
-        addEnv("MYSQL_USER", "admin");
-        addEnv("MYSQL_PASSWORD", "admin");
-        addEnv("MYSQL_ROOT_PASSWORD", "admin");
+        addEnv("MYSQL_ROOT_USERNAME", "root");
+        addEnv("MYSQL_ROOT_PASSWORD", "111111");
         setCommand("mysqld");
         setStartupAttempts(3);
     }
@@ -32,17 +30,17 @@ public class MySQLContainerCustomized<SELF extends MySQLContainerCustomized<SELF
 
     @Override
     public String getJdbcUrl() {
-        return "jdbc:mysql://" + getHost() + ":" + getMappedPort(MYSQL_PORT) + "/" + "eis";
+        return "jdbc:mysql://" + getHost() + ":" + getMappedPort(MYSQL_PORT);
     }
 
     @Override
     public String getUsername() {
-        return "admin";
+        return "root";
     }
 
     @Override
     public String getPassword() {
-        return "admin";
+        return "111111";
     }
 
     @Override
